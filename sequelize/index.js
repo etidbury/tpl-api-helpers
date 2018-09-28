@@ -133,6 +133,7 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
 
                 return _models[modelName]
             }
+            console.log('add pre')
 
             next()
 
