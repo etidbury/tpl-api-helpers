@@ -123,8 +123,9 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
         // -----------/Run fixtures ----------- //
 
         // ----------- Attach models to fastify ----------- //
+        console.log("Attach models to fastify")
         fastify.addHook('preHandler', (request, reply, _next) => {
-            
+            console.log("prehandler,blah")
             request.sequelize = sequelize
             request.models = _models
             request.model = modelName => {
