@@ -3,7 +3,7 @@ const { readDirR } = require('./util')
 
 module.exports.fastifySequelizePlugin = require('./sequelize').fastifySequelizePlugin
 
-module.exports.fastifyRoutesPlugin = async(fastify,opts,next)=>{
+module.exports.fastifyRoutesPlugin = async(fastify,opts)=>{
     
     const { 
         ROUTES_PREFIX

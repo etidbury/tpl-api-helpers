@@ -11,7 +11,7 @@ const {
     , FIXTURES
 } = process.env
 
-module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
+module.exports.fastifySequelizePlugin = async (fastify, opts) => {
 
     const configPath=path.join(process.cwd(),'sequelize/config')
 
@@ -124,7 +124,7 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
 
         // ----------- Attach models to fastify ----------- //
         console.log("Attach models to fastify")
-        fastify.addHook('preHandler', (request, reply, _next) => {
+        fastify.addHook('preHandler', async (request, reply) => {
             console.log("prehandler,blah")
             request.sequelize = sequelize
             request.models = _models
@@ -135,8 +135,6 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
                 return _models[modelName]
             }
             console.log('add pre')
-
-            _next()
 
         })
         // -----------/Attach models to fastify ----------- //
@@ -180,6 +178,4 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
     })
 
     // -----------/Gracefully shut down Sequelize connection ----------- //
-
-    next()
 }
