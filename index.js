@@ -1,6 +1,6 @@
 module.exports.fastifySequelizePlugin=require('./sequelize').fastifySequelizePlugin
 
-module.exports.fastifyRoutesPlugin=(fastify,opts,next)=>{
+module.exports.fastifyRoutesPlugin = async(fastify,opts,next)=>{
 
     const { 
         ROUTES_PREFIX
