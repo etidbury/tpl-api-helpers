@@ -152,29 +152,29 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
     }
 
     // ----------- Gracefully shut down Sequelize connection ----------- //
-    process.stdin.resume()// so the program will not close instantly
+    // process.stdin.resume()// so the program will not close instantly
 
-    const onExitHandler = async (exitCode)=>{
+    // const onExitHandler = async (exitCode)=>{
      
-        console.info('\n> Sequelize: Closing connection...')
-        try {
-            await sequelize.close()
-        }catch(e) {
-            // suppress
-        }
-        console.info('> Sequelize: Disconnected.')
-        process.exit()
+    //     console.info('\n> Sequelize: Closing connection...')
+    //     try {
+    //         await sequelize.close()
+    //     }catch(e) {
+    //         // suppress
+    //     }
+    //     console.info('> Sequelize: Disconnected.')
+    //     process.exit()
 
-    }
+    // }
 
-    const CLEANUP_SIGNALS = [
-        'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
-        'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
-    ]
-    // catching signals and do something before exit
-    CLEANUP_SIGNALS.forEach(function (sig) {
-        process.on(sig, onExitHandler.bind(null))
-    })
+    // const CLEANUP_SIGNALS = [
+    //     'SIGHUP', 'SIGINT', 'SIGQUIT', 'SIGILL', 'SIGTRAP', 'SIGABRT',
+    //     'SIGBUS', 'SIGFPE', 'SIGUSR1', 'SIGSEGV', 'SIGUSR2', 'SIGTERM'
+    // ]
+    // // catching signals and do something before exit
+    // CLEANUP_SIGNALS.forEach(function (sig) {
+    //     process.on(sig, onExitHandler.bind(null))
+    // })
 
     // -----------/Gracefully shut down Sequelize connection ----------- //
 }
