@@ -1,4 +1,3 @@
-const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
 const { readDirR } = require('../util')
@@ -70,11 +69,7 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
         
         // ----------- Run fixtures ----------- //
         if (FIXTURES) {
-            console.info('> Fixtures: Waiting for server to start...')
-            // wait for application to start incase fixtures use API endpoints
-            // eslint-disable-next-line promise/prefer-await-to-then
-            fastify.ready().then(async ()=>{
-
+           
                 console.info('> Fixtures: Loading files...')
 
                 const fixturesDir = path.join(process.cwd(), 'sequelize/fixtures')
@@ -122,11 +117,9 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
     
                 console.info('> Fixtures: Complete')
 
-            }).catch((err)=>{
-                console.error('> Fixtures: An error occurred:',err)
-            })
+           
         
-        }
+        }//end if FIXTURES
         // -----------/Run fixtures ----------- //
 
         // ----------- Attach models to fastify ----------- //
