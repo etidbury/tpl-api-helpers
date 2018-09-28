@@ -1,7 +1,6 @@
 const fs = require('fs')
 const path = require('path')
 const Sequelize = require('sequelize')
-const basename = path.basename(__filename)
 const { readDirR } = require('../util')
 
 const isProd = process.env.NODE_ENV === 'production'
@@ -14,8 +13,8 @@ const {
 } = process.env
 
 module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
-    
-    const configPath=path.join(process.cwd(),'config')
+
+    const configPath=path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
 
@@ -39,13 +38,12 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
         }
 
         // ----------- Initialise models ----------- //
-        const modelsDir = path.join(__dirname, './models')
-    
+        const modelsDir = path.join(process.cwd(), 'sequelize/models')
+
         readDirR(modelsDir)
             .filter(file => {
                 return (
                     file.indexOf('.') !== 0 &&
-                file !== basename &&
                 file.slice(-3) === '.js'
                 )
             })
@@ -79,19 +77,20 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
 
                 console.info('> Fixtures: Loading files...')
 
-                const fixturesDir = path.join(__dirname, './fixtures')
+                const fixturesDir = path.join(process.cwd(), 'sequelize/fixtures')
                 
                 const fixturesFileList = readDirR(fixturesDir)
                     .filter(file => (
                         file.indexOf('.') !== 0 &&
-                    file !== basename &&
                     file.slice(-3) === '.js' && 
                     file.indexOf('._') <= -1 // ignore folders/files with ._ in name
                     )
                     )
     
                 for (let i = 0; i < fixturesFileList.length; i++) {
-                    const fixturesFile = './' + path.relative(__dirname,fixturesFileList[i])
+                    const fixturesFile = fixturesFileList[i]
+                    const fixturesFilePretty = './' + path.relative(process.cwd(),fixturesFileList[i])
+
                     try {
             
                         const args = {}
@@ -107,15 +106,15 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
     
                         const fixtureMethod = require(fixturesFile)
     
-                        console.info('> Fixtures: File ',fixturesFile,'Loading...')
+                        console.info('> Fixtures: File ',fixturesFilePretty,'Loading...')
                         if (typeof fixtureMethod !== 'function')
                             throw new TypeError('Invalid fixture format. Please make sure your fixture file returns an executable method')
                     
                         await fixtureMethod(args)
-                        console.info('> Fixtures: File ',fixturesFile,'Complete')
+                        console.info('> Fixtures: File ',fixturesFilePretty,'Complete')
     
                     }catch(err){
-                        console.error('> Fixtures: Error in fixtures file:',fixturesFile)
+                        console.error('> Fixtures: Error in fixtures file:',fixturesFilePretty)
                         throw err
                     }
     
