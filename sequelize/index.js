@@ -13,6 +13,7 @@ const {
 
 module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
 
+    console.log('fastify',fastify)
     const configPath=path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
