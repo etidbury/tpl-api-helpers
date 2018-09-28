@@ -13,7 +13,6 @@ const {
 
 module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
 
-    console.log('fastify',fastify)
     const configPath=path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
@@ -124,8 +123,8 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
         // -----------/Run fixtures ----------- //
 
         // ----------- Attach models to fastify ----------- //
-        fastify.addHook('preHandler', (request, reply, next) => {
-
+        fastify.addHook('preHandler', (request, reply, _next) => {
+            
             request.sequelize = sequelize
             request.models = _models
             request.model = modelName => {
@@ -136,7 +135,7 @@ module.exports.fastifySequelizePlugin = async (fastify, opts, next) => {
             }
             console.log('add pre')
 
-            next()
+            _next()
 
         })
         // -----------/Attach models to fastify ----------- //
