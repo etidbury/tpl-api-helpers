@@ -11,7 +11,7 @@ const {
     , FIXTURES
 } = process.env
 
-module.exports.fastifySequelizePlugin = async (fastify, opts) => {
+module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
 
     const configPath=path.join(process.cwd(),'sequelize/config')
 
@@ -123,9 +123,7 @@ module.exports.fastifySequelizePlugin = async (fastify, opts) => {
         // -----------/Run fixtures ----------- //
 
         // ----------- Attach models to fastify ----------- //
-        console.log("Attach models to fastify")
         fastify.addHook('preHandler', async (request, reply) => {
-            console.log("prehandler,blah")
             request.sequelize = sequelize
             request.models = _models
             request.model = modelName => {
@@ -134,10 +132,11 @@ module.exports.fastifySequelizePlugin = async (fastify, opts) => {
 
                 return _models[modelName]
             }
-            console.log('add pre')
-
         })
         // -----------/Attach models to fastify ----------- //
+
+        // Note: Placed here so fastify.addHook works correctly (@ref: https://github.com/fastify/fastify-mongodb/issues/8)
+        require('../').routesPlugin(fastify)
 
     }catch(err) {
       
