@@ -1,6 +1,6 @@
 {
   "name": "tpl-api-helpers",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "Helper functions for tpl-api",
   "main": "index.js",
   "scripts": {
