@@ -1,3 +1,5 @@
+process.chdir(process.cwd())
+
 const isProd = process.env.NODE_ENV === "production";
 
 const requiredModules=[
