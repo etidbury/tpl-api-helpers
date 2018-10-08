@@ -1,12 +1,18 @@
 const path = require('path')
 const { readDirR } = require('./util')
 const {
-    ROUTES_PREFIX
+    ROUTES_PREFIX,
+    NODE_ENV
 } = process.env
+
+const isProd = NODE_ENV === "production"
+
+
 module.exports.routesPlugin = (fastify)=>{
       // -----------Register routes ----------- //
-      const routesDir = path.join(process.cwd(), './routes')
-    
+      const routesDir = path.join(process.cwd(), isProd ? './.build.routes' : './routes')
+      //todo: add check routes dir exists
+
       readDirR(routesDir)
           .filter(
               file =>
