@@ -13,5 +13,8 @@
     "mysql2": "^1.6.1",
     "path": "0.12.7",
     "sequelize": "4.39.0"
+  },
+  "devDependencies": {
+    "eslint-plugin-promise": "^4.0.1"
   }
 }
