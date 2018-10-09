@@ -13,7 +13,7 @@ const {
 
 module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
 
-    const configPath=path.join(process.cwd(),'sequelize/config')
+    const configPath = path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
 
@@ -70,56 +70,54 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
         // ----------- Run fixtures ----------- //
         if (FIXTURES) {
            
-                console.info('> Fixtures: Loading files...')
+            console.info('> Fixtures: Loading files...')
 
-                const fixturesDir = path.join(process.cwd(), 'sequelize/fixtures')
+            const fixturesDir = path.join(process.cwd(), 'sequelize/fixtures')
                 
-                const fixturesFileList = readDirR(fixturesDir)
-                    .filter(file => (
-                        file.indexOf('.') !== 0 &&
+            const fixturesFileList = readDirR(fixturesDir)
+                .filter(file => (
+                    file.indexOf('.') !== 0 &&
                     file.slice(-3) === '.js' && 
                     file.indexOf('._') <= -1 // ignore folders/files with ._ in name
-                    )
-                    )
+                )
+                )
     
-                for (let i = 0; i < fixturesFileList.length; i++) {
-                    const fixturesFile = fixturesFileList[i]
-                    const fixturesFilePretty = './' + path.relative(process.cwd(),fixturesFileList[i])
+            for (let i = 0; i < fixturesFileList.length; i++) {
+                const fixturesFile = fixturesFileList[i]
+                const fixturesFilePretty = './' + path.relative(process.cwd(),fixturesFileList[i])
 
-                    try {
+                try {
             
-                        const args = {}
+                    const args = {}
     
-                        args.sequelize = sequelize
-                        args.models = _models
-                        args.model = modelName => {
-                            if (!_models[modelName])
-                                throw new Error(`Invalid model name '${modelName}'`)
+                    args.sequelize = sequelize
+                    args.models = _models
+                    args.model = modelName => {
+                        if (!_models[modelName])
+                            throw new Error(`Invalid model name '${modelName}'`)
     
-                            return _models[modelName]
-                        }
-    
-                        const fixtureMethod = require(fixturesFile)
-    
-                        console.info('> Fixtures: File ',fixturesFilePretty,'Loading...')
-                        if (typeof fixtureMethod !== 'function')
-                            throw new TypeError('Invalid fixture format. Please make sure your fixture file returns an executable method')
-                    
-                        await fixtureMethod(args)
-                        console.info('> Fixtures: File ',fixturesFilePretty,'Complete')
-    
-                    }catch(err){
-                        console.error('> Fixtures: Error in fixtures file:',fixturesFilePretty)
-                        throw err
+                        return _models[modelName]
                     }
     
-                }// end for
+                    const fixtureMethod = require(fixturesFile)
     
-                console.info('> Fixtures: Complete')
-
-           
+                    console.info('> Fixtures: File ',fixturesFilePretty,'Loading...')
+                    if (typeof fixtureMethod !== 'function')
+                        throw new TypeError('Invalid fixture format. Please make sure your fixture file returns an executable method')
+                    
+                    await fixtureMethod(args)
+                    console.info('> Fixtures: File ',fixturesFilePretty,'Complete')
+    
+                }catch(err){
+                    console.error('> Fixtures: Error in fixtures file:',fixturesFilePretty)
+                    throw err
+                }
+    
+            }// end for
+    
+            console.info('> Fixtures: Complete')
         
-        }//end if FIXTURES
+        }// end if FIXTURES
         // -----------/Run fixtures ----------- //
 
         // ----------- Attach models to fastify ----------- //

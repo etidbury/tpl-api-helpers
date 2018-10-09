@@ -1,9 +1,8 @@
 const path = require('path')
 
+const isProd = process.env.NODE_ENV === 'production';
 
-const isProd = process.env.NODE_ENV === "production";
-
-const requiredModules=[
+const requiredModules = [
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-flow',
@@ -11,7 +10,7 @@ const requiredModules=[
 ]
 
 try {
-    for(let i=0; i<requiredModules.length;i++){
+    for(let i = 0; i < requiredModules.length;i++){
         try {
             require(path.join(process.cwd(),'node_modules',requiredModules[i]))
         }catch (err){
@@ -29,14 +28,13 @@ try {
     process.exit(1)
 }
 
-
 const plugins = [
     [
-        "module-resolver",
+        'module-resolver',
         {
             alias: {
-                root: ["./"],
-                routes: isProd ? "/.build.routes" : "./routes",
+                root: ['./'],
+                routes: isProd ? '/.build.routes' : './routes',
             }
         }
     ]
@@ -44,8 +42,8 @@ const plugins = [
 
 const presets = [
     
-        "@babel/preset-env",
-        "@babel/flow"
+    '@babel/preset-env',
+    '@babel/flow'
     
 ]
 
@@ -53,9 +51,9 @@ module.exports = {
     presets: presets,
     plugins: plugins,
     ignore: [
-        "_*",
-        "._*",
-        "node_modules/**/*",
-        "packages"
+        '_*',
+        '._*',
+        'node_modules/**/*',
+        'packages'
     ]
-};
+}
