@@ -32,17 +32,15 @@ module.exports = {
     logging: !DISABLE_LOGS && function(msg){
         console.debug('> Sequelize:',msg)
     },
-    
-    freezeTableName: true,
     // disable inserting undefined values as NULL
     // - default: false
     omitNull: true,
     
     define: {
-        freezeTableName: false,
-        charset: 'utf8',
+        freezeTableName: true,
+        charset: 'utf8mb4',
         dialectOptions: {
-            collate: 'utf8_general_ci'
+            collate: 'utf8mb4_unicode_ci'
         },
         timestamps: true
     },
