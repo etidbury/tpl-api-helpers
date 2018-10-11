@@ -29,43 +29,46 @@ module.exports = (fastify,opts,next)=>{
             fastify.register(require('fastify-sensible'))
                 .after(()=>{
                     console.info('> Loaded plugin: fastify-sensible') 
-                    fastify.setErrorHandler(async (err, req, reply) => {
+                    if (!isProd){
+                    
+                        fastify.setErrorHandler(async (err, req, reply) => {
                 
-                        try {
-                            const youch = new Youch(err, reply.request.req)
+                            try {
+                                const youch = new Youch(err, reply.request.req)
 
-                            if (req.headers.accept.indexOf('text/html') > -1) {
+                                if (req.headers.accept.indexOf('text/html') > -1) {
                                 
-                                youch
-                                    .addLink(({ message }) => {
-                                        const url = `https://stackoverflow.com/search?q=${encodeURIComponent(`${message}`)}`
-                                        return `<a href="${url}" target="_blank" title="Search on Stackoverflow">Search StackOverflow</a>`
-                                    })
-                                    .addLink((opts) => {
+                                    youch
+                                        .addLink(({ message }) => {
+                                            const url = `https://stackoverflow.com/search?q=${encodeURIComponent(`${message}`)}`
+                                            return `<a href="${url}" target="_blank" title="Search on Stackoverflow">Search StackOverflow</a>`
+                                        })
+                                        .addLink((opts) => {
                                         // const url = `https://stackoverflow.com/search?q=${encodeURIComponent(`${message}`)}`
-                                        const frame = opts.frames[0]
-                                        return `<a href="vscode://file${frame.filePath}" title="Open in VSCode">Open in VSCode: ${frame.file}</a>`
-                                    })
+                                            const frame = opts.frames[0]
+                                            return `<a href="vscode://file${frame.filePath}" title="Open in VSCode">Open in VSCode: ${frame.file}</a>`
+                                        })
 
-                                const html = await youch.toHTML()
+                                    const html = await youch.toHTML()
                     
-                                // vscode://file/c:/myProject/package.json:5:10
-                                reply.type('text/html')
-                                reply.send(html)
+                                    // vscode://file/c:/myProject/package.json:5:10
+                                    reply.type('text/html')
+                                    reply.send(html)
                     
+                                }
+                                const output = await youch.toJSON()
+
+                                console.error(forTerminal(output))
+
+                            } catch (e) {
+
+                                console.error(e)
                             }
-                            const output = await youch.toJSON()
 
-                            console.error(forTerminal(output))
-
-                        } catch (e) {
-
-                            console.error(e)
-                        }
-
-                        reply.send(err)
+                            reply.send(err)
            
-                    })// end fastify.setErrorHandler
+                        })// end fastify.setErrorHandler
+                    }// end !isProd
                 })// end after
             
             const routesPlugin = require('./plugin/routes')
