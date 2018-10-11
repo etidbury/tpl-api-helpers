@@ -1,5 +1,3 @@
-// const isProd = process.env.NODE_ENV === 'production'
-
 // ensure all required env variables are set for MySQL connection
 ['MYSQL_HOST', 'MYSQL_DB_NAME', 'MYSQL_USER', 'MYSQL_PASSWORD'].forEach(
     envVarName => {
@@ -16,7 +14,6 @@ const {
     , MYSQL_USER
     , MYSQL_PASSWORD
     , DISABLE_LOGS
-    , SEQUELIZE_LOGGING
 } = process.env
 
 module.exports = {
@@ -29,7 +26,7 @@ module.exports = {
     autoConnect: true, // auto authentication and test connection on first run
     // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
     operatorsAliases: false,
-    logging: !DISABLE_LOGS && function(msg){
+    logging: !DISABLE_LOGS && function(msg) {
         console.debug('> Sequelize:',msg)
     },
     // disable inserting undefined values as NULL

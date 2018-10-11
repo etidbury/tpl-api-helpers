@@ -1,9 +1,3 @@
-const path = require('path')
-const Sequelize = require('sequelize')
-const { readDirR } = require('../util')
-
-const isProd = process.env.NODE_ENV === 'production'
-
 const {
     SEQUELIZE_AUTO_CONNECT
     , SEQUELIZE_SYNC
@@ -11,11 +5,19 @@ const {
     , FIXTURES
 } = process.env
 
-module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
+const path = require('path')
+const Sequelize = require('sequelize')
+const { readDirR } = require('../../util')
 
+const isProd = process.env.NODE_ENV === 'production'
+
+module.exports = async (fastify,opts,next)=>{
+    
     const configPath = path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
+
+    console.info('> Initiating Sequelize plugin')
 
     try {
 
@@ -37,6 +39,8 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
         }
 
         // ----------- Initialise models ----------- //
+
+        console.info('> Initiating models')
         const modelsDir = path.join(process.cwd(), 'sequelize/models')
 
         readDirR(modelsDir)
@@ -120,8 +124,11 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
         }// end if FIXTURES
         // -----------/Run fixtures ----------- //
 
+        console.info('> Adding model preHandler')
         // ----------- Attach models to fastify ----------- //
         fastify.addHook('preHandler', async (request, reply) => {
+
+            console.log('pree....')
             request.sequelize = sequelize
             request.models = _models
             request.model = modelName => {
@@ -133,15 +140,14 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
         })
         // -----------/Attach models to fastify ----------- //
 
-        // Note: Placed here so fastify.addHook works correctly (@ref: https://github.com/fastify/fastify-mongodb/issues/8)
-        require('../').routesPlugin(fastify)
-
+        require('./routes')(fastify)
+        
     }catch(err) {
       
         try {
-            console.info('> Sequelize: Closing connection...')
+            log.info('> Sequelize: Closing connection...')
             await sequelize.close()
-            console.info('> Sequelize: Disconnected.')
+            log.info('> Sequelize: Disconnected.')
 
         }catch(e) {
             // ignore if sequelize has not been started yet
@@ -154,13 +160,13 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
 
     // const onExitHandler = async (exitCode)=>{
      
-    //     console.info('\n> Sequelize: Closing connection...')
+    //     log.info('\n> Sequelize: Closing connection...')
     //     try {
     //         await sequelize.close()
     //     }catch(e) {
     //         // suppress
     //     }
-    //     console.info('> Sequelize: Disconnected.')
+    //     log.info('> Sequelize: Disconnected.')
     //     process.exit()
 
     // }
@@ -175,4 +181,8 @@ module.exports.fastifySequelizeAndRoutesPlugin = async (fastify, opts) => {
     // })
 
     // -----------/Gracefully shut down Sequelize connection ----------- //
+
+    next()
+
+    return fastify
 }

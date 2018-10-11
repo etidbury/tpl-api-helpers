@@ -9,10 +9,17 @@
   "author": "Edd Tidbury",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^6.1.0",
+    "fastify-blipp": "^1.2.1",
+    "fastify-sensible": "^0.2.0",
     "fs": "0.0.1-security",
     "mysql2": "^1.6.1",
     "path": "0.12.7",
-    "sequelize": "4.39.0"
+    "pino": "^5.7.0",
+    "pino-pretty": "^2.2.1",
+    "sequelize": "4.39.0",
+    "youch": "^2.0.10",
+    "youch-terminal": "^1.0.0"
   },
   "devDependencies": {
     "eslint-plugin-promise": "^4.0.1"

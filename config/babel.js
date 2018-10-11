@@ -1,12 +1,17 @@
+const {
+    NODE_ENV
+} = process.env
+
 const path = require('path')
 
-const isProd = process.env.NODE_ENV === 'production';
+const isProd = NODE_ENV === 'production'
 
 const requiredModules = [
     '@babel/core',
     '@babel/preset-env',
     '@babel/preset-flow',
     'babel-plugin-module-resolver',
+    '@babel/plugin-proposal-optional-chaining'
 ]
 
 try {
@@ -29,12 +34,15 @@ try {
 }
 
 const plugins = [
+    '@babel/proposal-optional-chaining',
     [
         'module-resolver',
         {
             alias: {
                 root: ['./'],
                 routes: isProd ? '/.build.routes' : './routes',
+                lib: isProd ? '/.build.lib' : './lib',
+                services: isProd ? '/.build.services' : './services',
             }
         }
     ]
