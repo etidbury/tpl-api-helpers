@@ -24,8 +24,8 @@ module.exports = async(fastify,opts)=>{
             )
             .forEach(file => {
                 try {
-                
-                    console.info('> Loaded route plugin file:',file) 
+                    
+                    console.info('> Loaded route plugin file:',path.resolve(process.cwd(),file)) 
 
                     const route = require(file)
                     const routePlugin = typeof route.default !== 'undefined' ? route.default : route
