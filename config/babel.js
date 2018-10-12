@@ -43,6 +43,7 @@ const plugins = [
                 routes: isProd ? '/.build.routes' : './routes',
                 lib: isProd ? '/.build.lib' : './lib',
                 services: isProd ? '/.build.services' : './services',
+                util: isProd ? '/.build.util' : './util'
             }
         }
     ]
