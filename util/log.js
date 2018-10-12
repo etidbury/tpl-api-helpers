@@ -47,10 +47,8 @@ if (DISABLE_LOGS) {
             colorize: true,
             translateTime: 'SYS:standard'
         },
-        base: {
-            
-        }
-        // level: LOG_LEVEL || 'warn' // @ref: http://getpino.io/#/docs/api?id=level-string
+        base: {},
+        level: LOG_LEVEL || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
     })
 
     const _originalConsole = console
