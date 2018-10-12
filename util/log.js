@@ -42,12 +42,16 @@ if (DISABLE_LOGS) {
     
     const pino = require('pino')
 
+    const prettyPrintOptions = {
+        colorize: true
+    }
+    if (LOG_TIMESTAMP){
+        prettyPrintOptions.translateTime = 'SYS:standard'
+    }
+
     // Use pino and override default console methods
     const log = pino({ 
-        prettyPrint: { 
-            colorize: true,
-            translateTime: LOG_TIMESTAMP && 'SYS:standard'
-        },
+        prettyPrint: prettyPrintOptions,
         timestamp: LOG_TIMESTAMP || false,
         base: {},
         level: LOG_LEVEL || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
