@@ -18,7 +18,7 @@ if (isProd) {
 module.exports = (fastify,opts,next)=>{
 
     try {
-    
+        const { ValidationError, UniqueConstraintError } = require('sequelize/lib/errors')
         if (!DISABLE_LOGS) {
 
             // todo: integrate swagger! https://github.com/fastify/fastify-swagger
@@ -32,7 +32,15 @@ module.exports = (fastify,opts,next)=>{
                     if (!isProd){
                     
                         fastify.setErrorHandler(async (err, req, reply) => {
-                
+                            
+                            // Handle Sequelize errors
+                            if (err instanceof ValidationError) {
+                                reply.status(400) // Bad Request
+                            }
+                            else if (err instanceof UniqueConstraintError) {
+                                reply.status(409) // Conflict
+                            }
+
                             try {
                                 const youch = new Youch(err, reply.request.req)
 
