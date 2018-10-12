@@ -127,8 +127,6 @@ module.exports = async (fastify,opts,next)=>{
         console.info('> Adding model preHandler')
         // ----------- Attach models to fastify ----------- //
         fastify.addHook('preHandler', async (request, reply) => {
-
-            console.log('pree....')
             request.sequelize = sequelize
             request.models = _models
             request.model = modelName => {
