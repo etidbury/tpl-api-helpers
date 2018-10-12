@@ -1,6 +1,7 @@
 const {
     DISABLE_LOGS,
     LOG_LEVEL,
+    LOG_TIMESTAMP
 } = process.env
 
 // Disable console logs
@@ -45,8 +46,9 @@ if (DISABLE_LOGS) {
     const log = pino({ 
         prettyPrint: { 
             colorize: true,
-            translateTime: 'SYS:standard'
+            translateTime: LOG_TIMESTAMP && 'SYS:standard'
         },
+        timestamp: LOG_TIMESTAMP || false,
         base: {},
         level: LOG_LEVEL || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
     })
