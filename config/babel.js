@@ -38,8 +38,8 @@ const plugins = [
     [
         'module-resolver',
         {
+            root: ['./'],
             alias: {
-                root: ['./'],
                 routes: isProd ? '/.build.routes' : './routes',
                 lib: isProd ? '/.build.lib' : './lib',
                 services: isProd ? '/.build.services' : './services',
