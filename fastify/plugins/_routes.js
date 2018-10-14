@@ -7,7 +7,7 @@ const isProd = NODE_ENV === 'production'
 
 const path = require('path')
 
-module.exports = async(fastify,opts)=>{
+module.exports = async (fastify)=>{
     try{
     
         const { readDirR } = require('../../util')

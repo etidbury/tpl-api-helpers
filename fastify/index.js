@@ -78,16 +78,14 @@ module.exports = (fastify,opts,next)=>{
                         })// end fastify.setErrorHandler
                     }// end !isProd
                 })// end after
-            
-            const routesPlugin = require('./plugin/routes')
-            const sequelizePlugin = require('./plugin/sequelize')
 
-            if (USE_SEQUELIZE) {
-                fastify.register(sequelizePlugin)
+            fastify.register(require('./plugins'))
+            // if (USE_SEQUELIZE) {
+            //     fastify.register(sequelizePlugin)
                
-            } else {
-                fastify.register(routesPlugin)
-            }
+            // } else {
+            //     fastify.register(routesPlugin)
+            // }
             
         }
 

@@ -11,8 +11,7 @@ const { readDirR } = require('../../util')
 
 const isProd = process.env.NODE_ENV === 'production'
 
-module.exports = async (fastify,opts,next)=>{
-    
+module.exports = async (fastify)=>{
     const configPath = path.join(process.cwd(),'sequelize/config')
 
     const sequelize = new Sequelize(require(configPath))
@@ -137,8 +136,6 @@ module.exports = async (fastify,opts,next)=>{
             }
         })
         // -----------/Attach models to fastify ----------- //
-
-        require('./routes')(fastify)
         
     }catch(err) {
       
@@ -153,6 +150,7 @@ module.exports = async (fastify,opts,next)=>{
         throw err
     }
 
+    return fastify
     // ----------- Gracefully shut down Sequelize connection ----------- //
     // process.stdin.resume()// so the program will not close instantly
 
@@ -179,8 +177,4 @@ module.exports = async (fastify,opts,next)=>{
     // })
 
     // -----------/Gracefully shut down Sequelize connection ----------- //
-
-    next()
-
-    return fastify
 }
