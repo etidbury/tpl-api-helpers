@@ -46,7 +46,9 @@ yarn build
 # yarn db:seed
 
 # test new changes
-yarn test:ci
+yarn test:ci || tail /home/circleci/.pm2/pm2.log | pino-pretty || echo 'Failed to access pm2 logs'
+
+
 
 
 
