@@ -1,8 +1,11 @@
 const {
     DISABLE_LOGS,
     LOG_LEVEL,
-    LOG_TIMESTAMP
+    LOG_TIMESTAMP,
+    DEBUG
 } = process.env
+
+const isDebugging = DEBUG && DEBUG.length
 
 // Disable console logs
 if (DISABLE_LOGS) {
@@ -54,7 +57,7 @@ if (DISABLE_LOGS) {
         prettyPrint: prettyPrintOptions,
         timestamp: LOG_TIMESTAMP || false,
         base: {},
-        level: LOG_LEVEL || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
+        level: LOG_LEVEL || (isDebugging && 'debug') || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
     })
 
     const _originalConsole = console
