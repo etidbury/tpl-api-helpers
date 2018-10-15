@@ -66,7 +66,7 @@ if (DISABLE_LOGS) {
         'warn',
         'debug'
     ].forEach((n)=>{
-        
+        // eslint-disable-next-line no-console
         console[n] = function(){
             if (log[n])
                 log[n].apply(log,arguments)
