@@ -40,11 +40,13 @@ module.exports = async (fastify)=>{
       
                 }catch(err){
                     console.error('Route Plugin Error',err,file)
+                    throw err
                 }
             })
 
     }catch(err){
         console.error('Routes Error',err)
+        throw err
     }
     // -----------Register routes ----------- //
     // next()
