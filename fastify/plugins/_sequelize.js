@@ -147,6 +147,9 @@ module.exports = async (fastify)=>{
         }catch(e) {
             // ignore if sequelize has not been started yet
         }
+
+        console.error(err)
+
         throw err
     }
 
