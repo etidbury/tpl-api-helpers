@@ -1,10 +1,24 @@
 # quit as soon as a command fails
 set -e -v
-echo "v1"
+echo "Deployment v1"
+
 GITHUB_REPO_URL="https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
 TMP_DEV_BRANCH="${CIRCLE_BRANCH}-build-${CIRCLE_BUILD_NUM}"
 TARGET_BRANCH="development"
 
+## SEQUELIZE
+USE_SEQUELIZE=true
+#SEQUELIZE_AUTO_CONNECT=true
+SEQUELIZE_SYNC=true
+SEQUELIZE_SYNC_FORCE=true
+
+## Load fixtures upon starting API
+FIXTURES=true
+## MySQL Connection Settings
+MYSQL_HOST=localhost
+MYSQL_USER=root
+MYSQL_PASSWORD=
+MYSQL_DB_NAME="db_${CIRCLE_PROJECT_REPONAME}"
 
 # Register repo
 git remote -v
