@@ -14,7 +14,9 @@ const isProd = process.env.NODE_ENV === 'production'
 module.exports = async (fastify)=>{
     const configPath = path.join(process.cwd(),'sequelize/config')
 
-    const sequelize = new Sequelize(require(configPath))
+    const config = require(configPath)
+    
+    const sequelize = new Sequelize(config)
 
     console.info('> Initiating Sequelize plugin')
 
