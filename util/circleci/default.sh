@@ -6,20 +6,6 @@ export GITHUB_REPO_URL="https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USER
 export TMP_DEV_BRANCH="${CIRCLE_BRANCH}-build-${CIRCLE_BUILD_NUM}"
 export TARGET_BRANCH="development"
 
-## SEQUELIZE
-export USE_SEQUELIZE=true
-#SEQUELIZE_AUTO_CONNECT=true
-export SEQUELIZE_SYNC=true
-export SEQUELIZE_SYNC_FORCE=true
-
-## Load fixtures upon starting API
-export FIXTURES=true
-## MySQL Connection Settings
-export MYSQL_HOST=localhost
-export MYSQL_USER=root
-export MYSQL_PASSWORD=
-export MYSQL_DB_NAME="db_${CIRCLE_PROJECT_REPONAME}"
-
 # Register repo
 git remote -v
 git remote rm origin
