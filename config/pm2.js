@@ -2,12 +2,18 @@ require('dotenv').config()
 
 const path = require('path')
 
+const pkgName = require(path.join(process.cwd(),'package')).name
+
+if (!pkgName || !pkgName.length){
+    throw new TypeError('PM2 Config: Invalid package name. Make sure you specify a name in your package.json file')
+}
+
 module.exports = {
     'apps': [
         {
             'cwd': process.cwd(),
             'script': './index.js',
-            'name': 'oauth-api',
+            'name': pkgName,
             // 'watch': [
             //     './routes'
             // ],
