@@ -6,16 +6,22 @@ require('dotenv').config({ path: path.join(process.cwd(), '.env') })
 const {
     NODE_ENV,
     DISABLE_LOGS,
-    USE_SEQUELIZE
+    USE_SEQUELIZE,
+    DEBUG
 } = process.env
 
+const isDebugging = DEBUG && DEBUG.length
 const isProd = NODE_ENV === 'production'
+
+if (DISABLE_LOGS && isDebugging){
+    console.warn('You have disabled logs in debug mode! No logs will be shown until you unset environment variable DISABLE_LOGS')
+}
 
 module.exports = (fastify,opts,next)=>{
 
     try {
         const { ValidationError, UniqueConstraintError } = require('sequelize/lib/errors')
-        if (!DISABLE_LOGS) {
+        if (!DISABLE_LOGS && (!isProd || isDebugging)) {
 
             // todo: integrate swagger! https://github.com/fastify/fastify-swagger
 
@@ -25,7 +31,7 @@ module.exports = (fastify,opts,next)=>{
             fastify.register(require('fastify-sensible'))
                 .after(()=>{
                     console.info('> Loaded plugin: fastify-sensible') 
-                    if (!isProd){
+                    if (!isProd || isDebugging){
                     
                         fastify.setErrorHandler(async (err, req, reply) => {
                             

@@ -14,7 +14,10 @@ const {
     , MYSQL_USER
     , MYSQL_PASSWORD
     , DISABLE_LOGS
+    , DEBUG
 } = process.env
+
+const isDebugging = DEBUG && DEBUG.length
 
 module.exports = {
     dialect: 'mysql',
@@ -26,7 +29,7 @@ module.exports = {
     autoConnect: true, // auto authentication and test connection on first run
     // http://docs.sequelizejs.com/manual/tutorial/querying.html#operators
     operatorsAliases: false,
-    logging: !DISABLE_LOGS && function(msg) {
+    logging: !DISABLE_LOGS && isDebugging && function(msg) {
         console.debug('> Sequelize:',msg)
     },
     // disable inserting undefined values as NULL
