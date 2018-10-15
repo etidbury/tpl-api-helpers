@@ -11,10 +11,6 @@ const {
 
 const isProd = NODE_ENV === 'production'
 
-if (isProd) {
-    require('babel-polyfill')
-}
-
 module.exports = (fastify,opts,next)=>{
 
     try {
