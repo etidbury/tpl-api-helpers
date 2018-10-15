@@ -1,6 +1,6 @@
 # quit as soon as a command fails
 set -e -v
-echo "Deployment v1"
+echo "Deployment v1.0.0"
 
 GITHUB_REPO_URL="https://${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
 TMP_DEV_BRANCH="${CIRCLE_BRANCH}-build-${CIRCLE_BUILD_NUM}"
@@ -46,7 +46,7 @@ yarn build
 # yarn db:seed
 
 # test new changes
-yarn test:ci || tail /home/circleci/.pm2/pm2.log | pino-pretty || echo 'Failed to access pm2 logs'
+yarn test:ci
 
 
 
