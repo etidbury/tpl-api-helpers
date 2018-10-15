@@ -65,7 +65,7 @@ module.exports = async (fastify)=>{
         })
 
         if (SEQUELIZE_SYNC) {
-            await sequelize.sync({ force: !isProd || SEQUELIZE_SYNC_FORCE })
+            await sequelize.sync({ force: SEQUELIZE_SYNC_FORCE })
         }
 
         // -----------/Initialise models ----------- //
