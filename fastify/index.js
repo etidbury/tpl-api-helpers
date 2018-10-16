@@ -19,8 +19,6 @@ if (DISABLE_LOGS && isDebugging){
 
 module.exports = (fastify,opts,next)=>{
 
-    console.debug('> Environment variables:',process.env)
-    
     try {
         const { ValidationError, UniqueConstraintError } = require('sequelize/lib/errors')
         if (!DISABLE_LOGS && (!isProd || isDebugging)) {
