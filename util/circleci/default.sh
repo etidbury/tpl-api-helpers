@@ -35,16 +35,12 @@ yarn build
 yarn test:ci
 
 
-
-
-
-
 # save new changes to target branch
-git commit -am "Merge new build changes (Build ${CIRCLE_BUILD_NUM})"
-git checkout ${TARGET_BRANCH}
-git merge ${TMP_DEV_BRANCH}
-git push origin ${TARGET_BRANCH}
+((git commit -am "Merge new build changes (Build ${CIRCLE_BUILD_NUM})" || echo "Nothing to commit"))
 
+git checkout ${TARGET_BRANCH}
+((git merge ${TMP_DEV_BRANCH} || echo "Nothing to merge"))
+((git push origin ${TARGET_BRANCH} || echo "Nothing to push to ${TARGET_BRANCH}"))
 
 # delete tmp branch
 git branch -d ${TMP_DEV_BRANCH}
