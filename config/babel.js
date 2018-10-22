@@ -33,18 +33,32 @@ try {
     process.exit(1)
 }
 
+const baseURL = isProd ? './dist' : './src'
+
+// todo: improve module resolving (currently '../../dist/(...)' should be relative '../(...)')
+
+const alias = {
+    routes: './' + path.join(baseURL,'./routes'),
+    lib: './' + path.join(baseURL,'./lib'),
+    services: './' + path.join(baseURL,'./services'),
+    util: './' + path.join(baseURL,'./util'),
+    config: './' + path.join(baseURL,'./config')
+}
+// const alias = {
+//     routes: './' ,
+//     lib: './' ,
+//     services: './',
+//     util: './',
+//     config: './' 
+// }
+
 const plugins = [
     '@babel/proposal-optional-chaining',
     [
         'module-resolver',
         {
-            root: ['./'],
-            alias: {
-                routes: isProd ? '/.build.routes' : './routes',
-                lib: isProd ? '/.build.lib' : './lib',
-                services: isProd ? '/.build.services' : './services',
-                util: isProd ? '/.build.util' : './util'
-            }
+            root: [baseURL],
+            alias
         }
     ]
 ]

@@ -10,10 +10,11 @@
         "restart": ""
     },
     "watch": [
-        "./routes",
-        "./lib",
-        "./services",
-        "./util"
+        "./src/routes",
+        "./src/lib",
+        "./src/services",
+        "./src/util",
+        "./src/config"
     ],
     "env": {
         "NODE_ENV": "development"

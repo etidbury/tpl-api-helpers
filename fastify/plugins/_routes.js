@@ -12,7 +12,7 @@ module.exports = async (fastify)=>{
     
         const { readDirR } = require('../../util')
         // -----------Register routes ----------- //
-        const routesDir = path.join(process.cwd(), isProd ? './.build.routes' : './routes')
+        const routesDir = path.join(process.cwd(), isProd ? './dist' : './src','routes')
         // todo: add check routes dir exists
         console.info('> Registering routes')
         readDirR(routesDir)

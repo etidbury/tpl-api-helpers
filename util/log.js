@@ -61,22 +61,22 @@ if (DISABLE_LOGS) {
     })
 
     const _originalConsole = console
-    ;[
-        // 'log',
-        // 'trace',
-        'error',
-        'info',
-        'warn',
-        'debug'
-    ].forEach((n)=>{
-        // eslint-disable-next-line no-console
-        console[n] = function(){
-            if (log[n])
-                log[n].apply(log,arguments)
-            else
-                _originalConsole.log.apply(_originalConsole,arguments)
-        }
-    })
+    // ;[
+    //     // 'log',
+    //     // 'trace',
+    //     'error',
+    //     'info',
+    //     'warn',
+    //     'debug'
+    // ].forEach((n)=>{
+    //     // eslint-disable-next-line no-console
+    //     console[n] = function(){
+    //         if (log[n])
+    //             log[n].apply(log,arguments)
+    //         else
+    //             _originalConsole.log.apply(_originalConsole,arguments)
+    //     }
+    // })
 
     console.info('> Prettifying console with Pino')
 

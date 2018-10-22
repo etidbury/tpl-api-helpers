@@ -1,10 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-
-/**
- * Read directories recursively
- */
-module.exports.readDirR = dir =>
+const readDirR = dir =>
     fs
         .readdirSync(dir)
         .reduce(
@@ -14,3 +10,7 @@ module.exports.readDirR = dir =>
                     : files.concat(path.join(dir, file)),
             []
         )
+/**
+ * Read directories recursively
+ */
+module.exports.readDirR = readDirR

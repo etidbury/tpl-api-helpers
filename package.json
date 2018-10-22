@@ -9,7 +9,7 @@
   "author": "Edd Tidbury",
   "license": "ISC",
   "dependencies": {
-    "@etidbury/jwtauth": "^0.0.4",
+    "@etidbury/jwtauth": "^0.0.5",
     "dotenv": "^6.1.0",
     "fastify-blipp": "^1.2.1",
     "fastify-sensible": "^0.2.0",

@@ -34,7 +34,6 @@ module.exports = (fastify,opts,next)=>{
                     if (!isProd || isDebugging){
                     
                         fastify.setErrorHandler(async (err, req, reply) => {
-                            
                             // Handle Sequelize errors
                             if (err instanceof ValidationError) {
                                 reply.status(400) // Bad Request
@@ -71,8 +70,7 @@ module.exports = (fastify,opts,next)=>{
                                 console.error(forTerminal(output))
 
                             } catch (e) {
-
-                                console.error(e)
+                                throw e
                             }
 
                             reply.send(err)

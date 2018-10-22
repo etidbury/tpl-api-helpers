@@ -12,7 +12,10 @@ const { readDirR } = require('../../util')
 const isProd = process.env.NODE_ENV === 'production'
 
 module.exports = async (fastify)=>{
-    const configPath = path.join(process.cwd(),'sequelize/config')
+
+    const baseSequelizeDir = path.join(process.cwd(),isProd ? './dist' : './src','sequelize')
+
+    const configPath = path.join(baseSequelizeDir,'config')
 
     const config = require(configPath)
     
@@ -42,7 +45,7 @@ module.exports = async (fastify)=>{
         // ----------- Initialise models ----------- //
 
         console.info('> Initiating models')
-        const modelsDir = path.join(process.cwd(), 'sequelize/models')
+        const modelsDir = path.join(baseSequelizeDir, 'models')
 
         readDirR(modelsDir)
             .filter(file => {
@@ -73,11 +76,12 @@ module.exports = async (fastify)=>{
         // -----------/Initialise models ----------- //
         
         // ----------- Run fixtures ----------- //
+        
         if (FIXTURES) {
-           
+            
             console.info('> Fixtures: Loading files...')
 
-            const fixturesDir = path.join(process.cwd(), 'sequelize/fixtures')
+            const fixturesDir = path.join(baseSequelizeDir, 'fixtures')
                 
             const fixturesFileList = readDirR(fixturesDir)
                 .filter(file => (
