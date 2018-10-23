@@ -76,7 +76,7 @@ if [ -z "${NOW_ALIAS}" ] || [ -z "${NOW_TOKEN}" ]; then
 else
 
     set -exo pipefail
-    
+
     echo "Zeit Now Deploying '${NOW_ALIAS}'..."
 
     now --alias "${NOW_ALIAS}" --token "${NOW_TOKEN}"
@@ -90,12 +90,6 @@ else
    
 
     curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Deployed ${CIRCLE_PROJECT_REPONAME} at https://${NOW_ALIAS}\"}" https://hooks.slack.com/services/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
-
-fi
-
-
-if [[ -z "${NOW_ALIAS}" ]]; then
-
 
 fi
 
