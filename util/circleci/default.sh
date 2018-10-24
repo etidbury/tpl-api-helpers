@@ -70,26 +70,43 @@ else
 fi
 
 #### Deploy via Zeit Now
+echo "test a:${NOW_ALIAS} t:${NOW_TOKEN}"
 
-if [ -z "${NOW_ALIAS}" ] || [ -z "${NOW_TOKEN}" ]; then
-    echo 'Skipping Zeit Now Deploy (NOW_ALIAS or NOW_TOKEN not set)'        
+if [ -z "${NOW_ALIAS}" ] || [ -z "${NOW_TOKEN}" ] || [ -z "${NOW_TEAM}" ]; then
+    echo 'Skipping Zeit Now Deploy ( NOW_ALIAS, NOW_TOKEN, NOW_TEAM not set )'        
 else
 
     set -exo pipefail
 
+    
+    # Save all env vars from shell environment to .env file
+    printenv | awk '!/PATH=/ && !/HOME=/ && !/PORT=/ && !/HOST=/ && !/CWD=/ && !/PWD=/' > .env
+
+    # re-add deleted env vars
+    echo "MYSQL_HOST=$MYSQL_HOST" >> .env
+
+    # Debug env vars
+    cat .env
+
+    # Debug files and permissions
+    ls -la
+
     echo "Zeit Now Deploying '${NOW_ALIAS}'..."
 
-    now --alias "${NOW_ALIAS}" --token "${NOW_TOKEN}"
+    export NOW_TEMP_URL=$(now --token "${NOW_TOKEN}" -e HOST='0.0.0.0' -e PORT='3009' --dotenv --team "${NOW_TEAM}")
+
+    echo "Zeit Now Aliasing '${NOW_TEMP_URL}' to '${NOW_ALIAS}'"
+
+    now alias "${NOW_TEMP_URL}" "${NOW_ALIAS}" --token "${NOW_TOKEN}" --team "${NOW_TEAM}"
 
     if [ -z "${NOW_SCALE}" ]; then
         echo "Skipping scale command (NOW_SCALE not set)"
     else
         echo "Scaling ${NOW_ALIAS} [Min: 1, Max: ${NOW_SCALE}]"
-        now scale "${NOW_ALIAS}" "1" "${NOW_SCALE}" --token "${NOW_TOKEN}"
+        now scale "${NOW_ALIAS}" "1" "${NOW_SCALE}" --token "${NOW_TOKEN}" --team "${NOW_TEAM}"
     fi
-   
 
-    curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Deployed ${CIRCLE_PROJECT_REPONAME} at https://${NOW_ALIAS}\"}" https://hooks.slack.com/services/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
+    curl -X POST -H 'Content-type: application/json' --data "{\"text\":\"Deployed ${CIRCLE_PROJECT_REPONAME} at https://${NOW_ALIAS} (${NOW_TEMP_URL})\"}" https://hooks.slack.com/services/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
 
 fi
 
