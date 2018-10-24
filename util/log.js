@@ -43,24 +43,24 @@ if (DISABLE_LOGS) {
     }
 }else{
     
-    const pino = require('pino')
+    // const pino = require('pino')
 
-    const prettyPrintOptions = {
-        colorize: true
-    }
-    if (LOG_TIMESTAMP){
-        prettyPrintOptions.translateTime = 'SYS:standard'
-    }
+    // const prettyPrintOptions = {
+    //     colorize: true
+    // }
+    // if (LOG_TIMESTAMP){
+    //     prettyPrintOptions.translateTime = 'SYS:standard'
+    // }
 
     // Use pino and override default console methods
-    const log = pino({ 
-        prettyPrint: prettyPrintOptions,
-        timestamp: LOG_TIMESTAMP || false,
-        base: {},
-        level: LOG_LEVEL || (isDebugging && 'debug') || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
-    })
+    // const log = pino({ 
+    //     prettyPrint: prettyPrintOptions,
+    //     timestamp: LOG_TIMESTAMP || false,
+    //     base: {},
+    //     level: LOG_LEVEL || (isDebugging && 'debug') || 'info' // @ref: http://getpino.io/#/docs/api?id=level-string
+    // })
 
-    const _originalConsole = console
+    // const _originalConsole = console
     // ;[
     //     // 'log',
     //     // 'trace',
@@ -78,6 +78,6 @@ if (DISABLE_LOGS) {
     //     }
     // })
 
-    console.info('> Prettifying console with Pino')
+    // console.info('> Prettifying console with Pino')
 
 }
